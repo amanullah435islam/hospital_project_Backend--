@@ -3,8 +3,6 @@ package com.hospital.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hospital.dao.PatientDAO;
 import com.hospital.model.Patient;
 
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class PatientController {
@@ -38,6 +36,8 @@ public class PatientController {
 	public List<Patient> getAllPatients(){
 		return patientDAO.getAll();
 	}
+	
+	
 	
 	@PostMapping("/patient")
 	public Patient save(@RequestBody Patient p) {
@@ -63,7 +63,7 @@ public class PatientController {
 	    }
 	
     
-    @PutMapping("/update/{id}")
+    @PutMapping("/patient/{id}")
     public ResponseEntity<Patient> update(@PathVariable(value = "id") long patientId,
          @Validated @RequestBody Patient patientDetails) {
 
@@ -81,24 +81,5 @@ public class PatientController {
         final Patient updatedPatient = patientDAO.update(patient); // ✅ এখানে update() মেথড ব্যবহার করো
         return ResponseEntity.ok(updatedPatient);
     }
-    
-    
-	//	//DAO -te optional use korci tai controller a optional type ar generic use korci
-	//	@GetMapping("/patient/{id}")
-	//	public ResponseEntity<Optional<Patient>> getByID(@PathVariable (value= "id") long id){
-	//		Optional<Patient> p = patientDAO.getByID(id);
-	//		return ResponseEntity.ok().body(p);
-	//	}
-    
-    
-    
-	//	//ai method a getByID() method takar karone dao ar delete method a optional use kora hoice...!
-	//    @DeleteMapping("/patient/{id}")
-	//    public Map<String, Boolean> delete(@PathVariable(value = "id") long patientId){
-	//    	Optional<Patient> patient = patientDAO.getByID(patientId);
-	//    	patientDAO.delete(patient);
-	//        Map<String, Boolean> response = new HashMap<>();
-	//        response.put("deleted", Boolean.TRUE);
-	//        return response;
-	//    }
+        
 }

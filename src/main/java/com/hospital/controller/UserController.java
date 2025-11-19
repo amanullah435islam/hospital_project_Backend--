@@ -1,191 +1,126 @@
 package com.hospital.controller;
 
 
-//normal code no security:::::
-//@RestController
-//@RequestMapping("/api/user")
-//@CrossOrigin(origins = "*")
-//public class UserController {
-//	
-//  @Autowired
-//  private UserDAO userDAO;
-//  
-//
-//  @PostMapping("/login")
-//  public ResponseEntity<?> login(@RequestBody User user) {
-//      User matchedUser = userDAO.getByUsernameAndPassword(user.getUsername(), user.getPassword(), user.getUserRole());
-//      if (matchedUser != null) {
-//          Map<String, Object> response = new HashMap<>();
-//          response.put("id", matchedUser.getId());
-//          response.put("username", matchedUser.getUsername());
-//          response.put("name", matchedUser.getName());
-//          response.put("role", matchedUser.getUserRole());
-//          response.put("imageUrl", matchedUser.getImageUrl());
-//          return ResponseEntity.ok(response);
-//      } else {
-//          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-//      }
-//  }
-//
-//  @PostMapping("/register")
-//  public User register(@RequestBody User user) {
-//      return userDAO.save(user);
-//  }
-//
-//  @PostMapping("/upload-image/{id}")
-//  public ResponseEntity<String> uploadImage(@PathVariable Long id, @RequestParam("image") MultipartFile file) {
-//      try {
-//          String folder = "uploads/";
-//          String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-//          Path filePath = Paths.get(folder + fileName);
-//          Files.createDirectories(filePath.getParent());
-//          Files.write(filePath, file.getBytes());
-//
-//          User user = userDAO.getUserById(id);
-//          user.setImageUrl(fileName);
-//          userDAO.save(user);
-//
-//          return ResponseEntity.ok("Image uploaded successfully");
-//      } catch (Exception e) {
-//          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
-//      }
-//  }
-//  
-//  @GetMapping("/username/{username}")
-//  public ResponseEntity<User> getByUsername(@PathVariable String username) {
-//      User user = userDAO.getUserByUsername(username);
-//      if (user != null) return ResponseEntity.ok(user);
-//      else return ResponseEntity.notFound().build();
-//  }
-//
-//  @GetMapping("/register")
-//  public List<User> getAll() {
-//      return userDAO.getAll();
-//  }
-//
-//  @GetMapping("/register/{id}")
-//  public ResponseEntity<User> getById(@PathVariable Long id) {
-//      User user = userDAO.getUserById(id);
-//      return ResponseEntity.ok(user);
-//  }
-//}
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
-import javax.naming.AuthenticationException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.hospital.config.JwtTokenProvider;
 import com.hospital.dao.UserDAO;
+import com.hospital.enums.Role;
 import com.hospital.model.User;
+import com.hospital.service.UserService;
 
-// //spring security code:::::
 @RestController
-@RequestMapping("/api/user")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/auth")
 public class UserController {
 
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    
     @Autowired
     private UserDAO userDAO;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    // 🔐 Login with Spring Security
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) throws AuthenticationException {
-        org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(
-		        new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		User matchedUser = userDAO.getUserByUsername(user.getUsername());
-
-		if (matchedUser != null) {
-		    Map<String, Object> response = new HashMap<>();
-		    response.put("id", matchedUser.getId());
-		    response.put("username", matchedUser.getUsername());
-		    response.put("name", matchedUser.getName());
-		    response.put("role", matchedUser.getUserRole());
-		    response.put("imageUrl", matchedUser.getImageUrl());
-		    return ResponseEntity.ok(response);
-		} else {
-		    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
-		}
+    
+    public UserController(AuthenticationManager authenticationManager, UserService userService,
+                          PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
-
-    // 🔐 Register (password encode করে save)
+    
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
-        if (userDAO.getUserByUsername(user.getUsername()) != null) {
-            return ResponseEntity.badRequest().body("Username is already taken");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // ✅ encode password
-        User savedUser = userDAO.save(user);
-
-        return ResponseEntity.ok(savedUser);
-    }
-
-    // 🔐 Upload Image
-    @PostMapping("/upload-image/{id}")
-    public ResponseEntity<String> uploadImage(@PathVariable Long id, @RequestParam("image") MultipartFile file) {
+    public ResponseEntity<?> register(@RequestBody User request) {
         try {
-            String folder = "uploads/";
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get(folder + fileName);
-            Files.createDirectories(filePath.getParent());
-            Files.write(filePath, file.getBytes());
 
-            User user = userDAO.getUserById(id);
-            user.setImageUrl(fileName);
-            userDAO.save(user);
+            // 1. Check username exists
+            if (userService.existsByUsername(request.getUsername())) {
+                return ResponseEntity.badRequest().body("Username already exists!");
+            }
 
-            return ResponseEntity.ok("Image uploaded successfully");
+            // 2. Check password match
+            if (!request.getPassword().equals(request.getConfirmPassword())) {
+                return ResponseEntity.badRequest().body("Passwords do not match!");
+            }
+
+            // 3. Set role safely
+            Role role = request.getUserRole() != null ? request.getUserRole() : Role.Patient;
+
+            // 4. Create new user
+            User user = new User();
+            user.setUserCode(request.getUserCode());
+            user.setName(request.getName());
+            user.setUsername(request.getUsername());
+            user.setEmail(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setUserRole(role);
+
+            // Optional but safe (prevent null)
+            user.setImageUrl(request.getImageUrl() != null ? request.getImageUrl() : "");
+
+            // Save user
+            User savedUser = userService.save(user);
+
+            // 5. Generate token
+            Authentication auth = new UsernamePasswordAuthenticationToken(
+                    user.getUsername(),
+                    request.getPassword()
+            );
+
+            String jwtToken = jwtTokenProvider.generateToken(auth);
+
+            // 6. Response map
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "User registered successfully!");
+            response.put("token", jwtToken);
+
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("id", savedUser.getId());
+            userInfo.put("username", savedUser.getUsername());
+            userInfo.put("name", savedUser.getName());
+            userInfo.put("email", savedUser.getEmail());
+            userInfo.put("role", savedUser.getUserRole().name()); // ENUM -> STRING
+            userInfo.put("userCode", savedUser.getUserCode());
+            response.put("user", userInfo);
+                       
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
+            return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
         }
     }
 
-    // 🔐 Get User by Username
-    @GetMapping("/username/{username}")
-    public ResponseEntity<User> getByUsername(@PathVariable String username) {
-        User user = userDAO.getUserByUsername(username);
-        if (user != null) return ResponseEntity.ok(user);
-        else return ResponseEntity.notFound().build();
+    
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+            );
+
+            String token = jwtTokenProvider.generateToken(auth);
+            return ResponseEntity.ok("{\"token\": \"" + token + "\"}");       
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(401).body("Invalid username or password");
+        }
     }
 
-    @GetMapping("/register")
-    public List<User> getAll() {
-        return userDAO.getAll();
-    }
-
-    @GetMapping("/register/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
-        User user = userDAO.getUserById(id);
-        return ResponseEntity.ok(user);
-    }
+  // Optional: logout can be done by client calling /logout (handled by Spring Security)
+    
 }
+
+
+
+
+

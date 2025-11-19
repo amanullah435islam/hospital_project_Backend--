@@ -1,14 +1,10 @@
 package com.hospital.dao;
 
 import java.util.List;
-
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.hospital.model.AppPayment;
 import com.hospital.model.TestPayment;
-
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
@@ -32,7 +28,7 @@ public class TestPaymentDAO {
 	}
 
 	public List<TestPayment> getAll() {
-	    String hql = "from testPayment";
+	    String hql = "from TestPayment";
 	    return getSession().createQuery(hql, TestPayment.class).list();
 	}
 

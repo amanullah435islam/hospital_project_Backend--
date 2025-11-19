@@ -1,15 +1,14 @@
 package com.hospital.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
+
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
-
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,15 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.hospital.dao.DoctorDAO;
 import com.hospital.model.Doctor;
-import com.hospital.model.Patient;
 import com.hospital.repository.DoctorRepository;
 
-
-
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class DoctorController {
@@ -77,6 +72,11 @@ public class DoctorController {
  
 	        final Doctor updatedDoctor = doctorDAO.update(doctor); 
 	        return ResponseEntity.ok(updatedDoctor);
+	        
+//	        if (doctor == null) {
+//	            return ResponseEntity.notFound().build();
+//	        }
+//	        return ResponseEntity.ok(doctor);
     }
 
 
@@ -90,22 +90,26 @@ public class DoctorController {
         return response;
     }
     
-    
-    
     @Autowired
     private DoctorRepository doctorRepository;
     
     @PostMapping("/doctor/saveDoctorWithImage")
-    public Doctor saveProductWithImage(@RequestPart("doctor") Doctor doctor,
-                                        @RequestPart("image") MultipartFile file) throws IOException {
-        
-        BufferedImage image = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
-        String imagePath = "src/main/resources/static/image/" + file.getOriginalFilename();
-        ImageIO.write(image, "jpg", new File(imagePath));
-        
-        doctor.setImage(file.getOriginalFilename());
+    public Doctor saveDoctorWithImage(
+            @RequestPart("doctor") Doctor doctor,
+            @RequestPart("image") MultipartFile file) throws IOException {
+
+        // Save to static/image folder
+        String folder = "src/main/resources/static/image/";
+        Files.createDirectories(Paths.get(folder));
+
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path filePath = Paths.get(folder + fileName);
+
+        Files.write(filePath, file.getBytes());
+
+        doctor.setImage(fileName);  // DB-তে শুধু filename save হবে
         return doctorRepository.save(doctor);
     }
-    
+
 }
 

@@ -1,17 +1,14 @@
 package com.hospital.dao;
 
 import java.util.List;
-
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.hospital.enums.Role;
 import com.hospital.model.User;
-
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-// //normal & security code:::::
+
 @Repository(value = "userDAO")
 @Transactional
 public class UserDAO{
@@ -58,5 +55,6 @@ public class UserDAO{
         return getSession().get(User.class, id);
     }
 	
+    
 }
 

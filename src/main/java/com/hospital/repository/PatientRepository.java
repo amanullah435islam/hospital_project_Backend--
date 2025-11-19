@@ -1,5 +1,5 @@
 package com.hospital.repository;
 
-public interface PatientRepo {
+public interface PatientRepository {
 
 }

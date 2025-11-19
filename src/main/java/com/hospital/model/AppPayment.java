@@ -1,9 +1,7 @@
 package com.hospital.model;
 
 import java.util.Date;
-
 import com.hospital.enums.PaymentMethod;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

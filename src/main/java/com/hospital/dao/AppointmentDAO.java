@@ -1,21 +1,16 @@
 package com.hospital.dao;
 
 import java.util.List;
-
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.hospital.model.Appointment;
-import com.hospital.model.Patient;
-
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 @Repository(value = "appointmentDAO")
 @Transactional
 public class AppointmentDAO {
-
 	
 	@Autowired
     private EntityManager entityManager;

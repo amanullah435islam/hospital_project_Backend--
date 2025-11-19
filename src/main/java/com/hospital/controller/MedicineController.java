@@ -16,7 +16,7 @@ import com.hospital.model.Medicine;
 import com.hospital.model.MedicineDAO;
 
 
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/medicine")
 public class MedicineController {

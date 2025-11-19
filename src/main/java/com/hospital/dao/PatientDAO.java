@@ -1,14 +1,10 @@
 package com.hospital.dao;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.hospital.model.Patient;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
@@ -27,7 +23,7 @@ public class PatientDAO {
 	
 	public Patient save(Patient p) {
 		getSession().save(p);
-		//getSession().flush();   //যদি @Transactional ব্যবহার করো, flush() প্রয়োজন হয় না। Hibernate automatically commit/flush করবে।
+		//getSession().flush();   
 		return p;
 	}
 	
@@ -43,7 +39,7 @@ public class PatientDAO {
 			String hql = "from Patient where id = :id";
 		    return getSession().createQuery(hql, Patient.class)
 		            .setParameter("id", id)
-		            .getSingleResult(); // throws NoResultException if not found
+		            .getSingleResult(); 
 		}
 	
 	
@@ -73,36 +69,6 @@ public class PatientDAO {
 		    q.executeUpdate();
 		    getSession().flush();
 		    return p;
-		}
-	 
-	 
-	 
-	 
-
-	 	//		public List<Patient> getAll(){
-		//		String sql = "from Patient";
-		//		List<Patient> get = getSession().createQuery(sql, Patient.class).list();
-		//		return get;
-		//	}
-		
-	 
-		// //akane just optional type deua hoice r uniqueResultOptional() return kora hoice....!
-		//	public Optional<Patient> getByID(long id) {
-		//	    String hql = "from Patient where id = :id";
-		//	    return getSession().createQuery(hql, Patient.class)
-		//	            .setParameter("id", id)
-		//	            .uniqueResultOptional();
-		//	}
-	 
-	 
-	 	// //uporer getByID() method a optional use korar karone ai delete method ar type & parameter a optional use kora hoice....!
-		//	 public Optional<Patient> delete(Optional<Patient> patient) {	 
-		//		 String hql = "delete from Patient where id = :id";
-		//		     getSession().createQuery(hql)
-		//		            .setParameter("id", patient.get())
-		//		            .executeUpdate();
-		//		     
-		//		     return patient; 
-		//	 }
+		}	 
 
 }
