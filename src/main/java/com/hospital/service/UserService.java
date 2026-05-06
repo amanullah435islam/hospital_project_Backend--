@@ -6,15 +6,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.hospital.model.User;
-import com.hospital.repository.UserRepository;
+import com.hospital.repository.IUserRepo;
 import java.util.Collections;
 
 @Service
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final IUserRepo userRepository;
 
-    public UserService(UserRepository repo) {
+    public UserService(IUserRepo repo) {
         this.userRepository = repo;
     }
 
