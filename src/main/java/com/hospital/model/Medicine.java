@@ -6,9 +6,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "medicine")
+
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Data
 public class Medicine {
 		
 	@Id
@@ -45,88 +54,4 @@ public class Medicine {
 	@Column(name = "duration")
 	private String duration;
 	
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public long getMedicineCode() {
-		return medicineCode;
-	}
-
-	public void setMedicineCode(int medicineCode) {
-		this.medicineCode = medicineCode;
-	}
-
-	public String getMedicineName() {
-		return medicineName;
-	}
-
-	public void setMedicineName(String medicineName) {
-		this.medicineName = medicineName;
-	}
-
-	
-	public int getAppointmentCode() {
-		return appointmentCode;
-	}
-
-	public void setAppointmentCode(int appointmentCode) {
-		this.appointmentCode = appointmentCode;
-	}
-
-	public int getAppointmentId() {
-		return appointmentId;
-	}
-
-	public void setAppointmentId(int appointmentId) {
-		this.appointmentId = appointmentId;
-	}
-
-	public int getPrescriptionCode() {
-		return prescriptionCode;
-	}
-
-	public void setPrescriptionCode(int prescriptionCode) {
-		this.prescriptionCode = prescriptionCode;
-	}
-
-	
-
-	public long getPrescriptionId() {
-		return prescriptionId;
-	}
-
-	public void setPrescriptionId(long prescriptionId) {
-		this.prescriptionId = prescriptionId;
-	}
-
-	public String getDose() {
-		return dose;
-	}
-
-	public void setDose(String dose) {
-		this.dose = dose;
-	}
-
-	public String getFrequency() {
-		return frequency;
-	}
-
-	public void setFrequency(String frequency) {
-		this.frequency = frequency;
-	}
-
-	public String getDuration() {
-		return duration;
-	}
-
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
-
 	} 

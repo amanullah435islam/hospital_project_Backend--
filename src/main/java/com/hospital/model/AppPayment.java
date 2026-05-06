@@ -10,9 +10,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 	@Entity
 	@Table(name = "appPayment")
+	
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@ToString
+	@Data
 	public class AppPayment {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,95 +57,4 @@ import jakarta.persistence.Table;
 		@Column(name = "card_expiry")
 		private String cardExpiry;
 
-
-
-		public long getId() {
-			return id;
-		}
-
-		public void setId(long id) {
-			this.id = id;
-		}
-
-		public int getPaymentCode() {
-			return paymentCode;
-		}
-
-		public void setPaymentCode(int paymentCode) {
-			this.paymentCode = paymentCode;
-		}
-
-		public int getPatientId() {
-			return patientId;
-		}
-
-		public void setPatientId(int patientId) {
-			this.patientId = patientId;
-		}
-
-		public String getPatientName() {
-			return patientName;
-		}
-
-		public void setPatientName(String patientName) {
-			this.patientName = patientName;
-		}
-
-		public Date getPaymentDate() {
-			return paymentDate;
-		}
-
-		public void setPaymentDate(Date paymentDate) {
-			this.paymentDate = paymentDate;
-		}
-
-		public int getAmount() {
-			return amount;
-		}
-
-		public void setAmount(int amount) {
-			this.amount = amount;
-		}
-
-		public PaymentMethod getPaymentMethod() {
-			return paymentMethod;
-		}
-
-		public void setPaymentMethod(PaymentMethod paymentMethod) {
-			this.paymentMethod = paymentMethod;
-		}
-
-		public String getMobileNumber() {
-			return mobileNumber;
-		}
-
-		public void setMobileNumber(String mobileNumber) {
-			this.mobileNumber = mobileNumber;
-		}
-
-		public String getTransactionId() {
-			return transactionId;
-		}
-
-		public void setTransactionId(String transactionId) {
-			this.transactionId = transactionId;
-		}
-
-		public String getCardNumber() {
-			return cardNumber;
-		}
-
-		public void setCardNumber(String cardNumber) {
-			this.cardNumber = cardNumber;
-		}
-
-		public String getCardExpiry() {
-			return cardExpiry;
-		}
-
-		public void setCardExpiry(String cardExpiry) {
-			this.cardExpiry = cardExpiry;
-		}
-		
-		
 	}
