@@ -10,13 +10,10 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-//import java.util.Base64;
-
-
-
 
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     @Value("${app.jwt.secret}")
@@ -24,12 +21,7 @@ public class JwtTokenProvider {
 
     @Value("${app.jwt.expiration-ms}")
     private long jwtExpirationMs;
-
-    // Key generator
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
-    }
-
+    
     // Generate Token
     public String generateToken(Authentication authentication) {
 
@@ -45,6 +37,11 @@ public class JwtTokenProvider {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
+    
+    // Key generator
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    }
 
     // Extract username
     public String getUsernameFromToken(String token) {
@@ -52,10 +49,11 @@ public class JwtTokenProvider {
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
+                //.parseClaimsJws(token.trim())
                 .getBody()
                 .getSubject();
     }
-
+    
     // Validate token
     public boolean validateToken(String token) {
         try {
@@ -64,85 +62,11 @@ public class JwtTokenProvider {
                     .build()
                     .parseClaimsJws(token);
             return true;
+        //} catch (Exception e) {
         } catch (JwtException | IllegalArgumentException e) {
             System.out.println("JWT VALIDATION ERROR: " + e.getMessage());
             return false;
         }
     }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//@Component
-//@RequiredArgsConstructor
-//public class JwtTokenProvider {
-//
-//    @Value("${app.jwt.secret}")
-//    private String jwtSecret;
-//
-//    @Value("${app.jwt.expiration-ms}")
-//    private long jwtExpirationMs;
-//
-//    // ✅ Generate token
-//    public String generateToken(Authentication authentication) {
-//        String username = authentication.getName();
-//        Date now = new Date();
-//        Date expiry = new Date(now.getTime() + jwtExpirationMs);
-//
-//        return Jwts.builder()
-//                .setSubject(username)
-//                .setIssuedAt(now)
-//                .setExpiration(expiry)
-//                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
-//                .compact();
-//    }
-//    
-//    
-//    private Key getSigningKey() {
-//        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
-//    }
-//
-//    // ✅ Extract username
-//    public String getUsernameFromToken(String token) {
-//        return Jwts.parserBuilder()
-//                .setSigningKey(getSigningKey())
-//                .build()
-//                .parseClaimsJws(token.trim())
-//                .getBody()
-//                .getSubject();
-//    }
-//
-//    
-//    public boolean validateToken(String token) {
-//        try {
-//            Jwts.parserBuilder()
-//                    .setSigningKey(getSigningKey())
-//                    .build()
-//                    .parseClaimsJws(token);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
-//}

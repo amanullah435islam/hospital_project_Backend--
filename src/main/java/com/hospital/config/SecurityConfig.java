@@ -17,127 +17,65 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import lombok.RequiredArgsConstructor;
 
-
-
-//@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtFilter;
-
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
-                .csrf(csrf -> csrf.disable())
-
-                .cors(cors -> cors.configurationSource(request -> {
-                    org.springframework.web.cors.CorsConfiguration config =
-                            new org.springframework.web.cors.CorsConfiguration();
-
-                    config.setAllowedOrigins(List.of("http://localhost:4200"));
-                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    config.setAllowedHeaders(List.of("*"));
-                    config.setAllowCredentials(true);
-
-                    return config;
-                }))
-
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/public/**").permitAll()
-                        .requestMatchers("/image/**").permitAll()
-                        .requestMatchers("/uploads/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-
-                .sessionManagement(sess ->
-                        sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            .csrf(
+            		csrf -> csrf.disable())
+            
+            .cors(
+            		cors -> cors.configurationSource(
+            				request -> {
+					                CorsConfiguration config = new CorsConfiguration();
+					                config.setAllowedOrigins(List.of("http://localhost:4200"));
+					                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+					                config.setAllowedHeaders(List.of("*"));
+					                config.setAllowCredentials(true);
+					                return config;
+					            }))
+  
+            .authorizeHttpRequests(auth -> auth
+            	    .requestMatchers("/api/auth/**").permitAll()       
+            	    .requestMatchers("/api/public/**").permitAll()     
+            	    .requestMatchers("/image/**").permitAll()     
+            	    .requestMatchers("/uploads/**").permitAll()     
+            	    .requestMatchers("/api/**").authenticated()       
+            	)
+            .formLogin(
+            		form -> form.disable())  
+            
+            .httpBasic(
+            		httpBasic -> httpBasic.disable())     
+            
+            .sessionManagement(
+            		sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            
+            .headers(
+            		headers -> headers.frameOptions(
+            				frame -> frame.sameOrigin()))
+            
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
+    }  
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+    
+    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//@Configuration
-//@EnableWebSecurity
-//@RequiredArgsConstructor
-//public class SecurityConfig {
-//
-//    private final JwtAuthenticationFilter jwtFilter;
-//
-////    public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
-////        this.jwtFilter = jwtFilter;
-////    }
-//    
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//            .csrf(csrf -> csrf.disable())
-//            .cors(cors -> cors.configurationSource(request -> {
-//                CorsConfiguration config = new CorsConfiguration();
-//                config.setAllowedOrigins(List.of("http://localhost:4200"));
-//                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//                config.setAllowedHeaders(List.of("*"));
-//                config.setAllowCredentials(true);
-//                return config;
-//            }))
-//  
-//            .authorizeHttpRequests(auth -> auth
-//            	    .requestMatchers("/api/auth/**").permitAll()       
-//            	    .requestMatchers("/api/public/**").permitAll()     
-//            	    .requestMatchers("/image/**").permitAll()     
-//            	    .requestMatchers("/uploads/**").permitAll()     
-//            	    .requestMatchers("/api/**").authenticated()       
-//            	)
-//            .formLogin(form -> form.disable())                      
-//            .httpBasic(httpBasic -> httpBasic.disable())            
-//            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
-//            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }  
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-//        return config.getAuthenticationManager();
-//    }
-//    
-//}
 
