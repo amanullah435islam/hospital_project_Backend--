@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.hospital.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface IUserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
 }
