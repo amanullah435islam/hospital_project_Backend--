@@ -8,10 +8,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 @Entity
 @Table(name = "patient")
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,82 +54,82 @@ public class Patient {
 	
 	
 
-	public long getId() {
-		return id;
-	}
-
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public int getPatientCode() {
-		return patientCode;
-	}
-
-	public void setPatientCode(int patientCode) {
-		this.patientCode = patientCode;
-	}
-
-	public String getPatientName() {
-		return patientName;
-	}
-
-	public void setPatientName(String patientName) {
-		this.patientName = patientName;
-	}
-
-
-	public int getVisitAmount() {
-		return visitAmount;
-	}
-
-
-	public void setVisitAmount(int visitAmount) {
-		this.visitAmount = visitAmount;
-	}
-
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public Date getDob() {
-		return dob;
-	}
-
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public Date getLastVisit() {
-		return lastVisit;
-	}
-
-	public void setLastVisit(Date lastVisit) {
-		this.lastVisit = lastVisit;
-	}
+//	public long getId() {
+//		return id;
+//	}
+//
+//
+//	public void setId(long id) {
+//		this.id = id;
+//	}
+//
+//	public int getPatientCode() {
+//		return patientCode;
+//	}
+//
+//	public void setPatientCode(int patientCode) {
+//		this.patientCode = patientCode;
+//	}
+//
+//	public String getPatientName() {
+//		return patientName;
+//	}
+//
+//	public void setPatientName(String patientName) {
+//		this.patientName = patientName;
+//	}
+//
+//
+//	public int getVisitAmount() {
+//		return visitAmount;
+//	}
+//
+//
+//	public void setVisitAmount(int visitAmount) {
+//		this.visitAmount = visitAmount;
+//	}
+//
+//
+//	public int getAge() {
+//		return age;
+//	}
+//
+//	public void setAge(int age) {
+//		this.age = age;
+//	}
+//
+//	public Date getDob() {
+//		return dob;
+//	}
+//
+//	public void setDob(Date dob) {
+//		this.dob = dob;
+//	}
+//
+//	public String getGender() {
+//		return gender;
+//	}
+//
+//	public void setGender(String gender) {
+//		this.gender = gender;
+//	}
+//
+//	
+//	public String getPhone() {
+//		return phone;
+//	}
+//
+//	public void setPhone(String phone) {
+//		this.phone = phone;
+//	}
+//
+//	public Date getLastVisit() {
+//		return lastVisit;
+//	}
+//
+//	public void setLastVisit(Date lastVisit) {
+//		this.lastVisit = lastVisit;
+//	}
 
 }
 
