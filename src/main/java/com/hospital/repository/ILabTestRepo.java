@@ -7,5 +7,5 @@ import com.hospital.model.LabTest;
 
 @Repository
 public interface ILabTestRepo extends JpaRepository<LabTest, Long>{
-
+	LabTest getLabTestById(Long id);
 }

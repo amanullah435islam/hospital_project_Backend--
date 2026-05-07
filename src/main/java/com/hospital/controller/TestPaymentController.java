@@ -1,51 +1,70 @@
 package com.hospital.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.hospital.dao.TestPaymentDAO;
 import com.hospital.model.TestPayment;
+import com.hospital.serviceimp.TestPaymentServiceImp;
+
+import lombok.RequiredArgsConstructor;
 
 //@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/TestPayment")
+
+@RequiredArgsConstructor
 public class TestPaymentController {
 
 	@Autowired
-	TestPaymentDAO testPaymentDAO;
+	private TestPaymentServiceImp service;
 
 	
+	
 	   @GetMapping("/{id}")
-	    public ResponseEntity<TestPayment> getTestPaymentById(@PathVariable(value = "id") int id) {
-		   TestPayment p = testPaymentDAO.getTestPaymentById(id);
-	        return ResponseEntity.ok().body(p);
-	    }
+	   public TestPayment getById(@PathVariable Long id) {
+	       return service.getById(id);
+	   }
+	   
 		
-		@GetMapping("/all")
-		public List<TestPayment> getAllTestPayments() {
-		    return testPaymentDAO.getAll();
+		@PostMapping("/save")
+		public TestPayment save(@RequestBody TestPayment TestPayment) {
+			return service.createTestPayment(TestPayment);
+			
 		}
+		
+		@GetMapping("/get")
+		public List<TestPayment> get(){
+			
+			return service.getAllTestPayment();
+			
+		}
+		
 
-	   
-	   @PostMapping("/save")
-	    public TestPayment createTestPayment(@RequestBody TestPayment testPayment) {
-	        return testPaymentDAO.save(testPayment);
+	    @PutMapping("/{id}")
+	    public TestPayment update(@PathVariable Long id, @RequestBody TestPayment TestPayment){
+	        return service.updateTestPayment(id, TestPayment);
 	    }
 
-	    @GetMapping("/check/{testCode}")
-	    public boolean isTestPaid(@PathVariable String testCode) {
-	        List<TestPayment> payments = testPaymentDAO.getByTestCode(testCode);
-	        return !payments.isEmpty(); 
+	    @DeleteMapping("/{id}")
+	    public void delete(@PathVariable Long id){
+	        service.deleteTestPayment(id);
+			System.out.println("aman");
 	    }
-
-	   
+	    
+	    
+	    
+	    // 🔹 Get By Test Code
+	    @GetMapping("/code/{testCode}")
+	    public List<TestPayment> getByTestCode(@PathVariable String testCode) {
+	        return service.getByTestCode(testCode);
+	    }
 
 }

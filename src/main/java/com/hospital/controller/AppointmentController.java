@@ -9,40 +9,47 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.hospital.dao.AppointmentDAO;
-import com.hospital.dao.DoctorDAO;
-import com.hospital.dao.PatientDAO;
+
 import com.hospital.model.Appointment;
 import com.hospital.model.Doctor;
 import com.hospital.model.Patient;
+import com.hospital.serviceimp.AppointmentServiceImp;
+import com.hospital.serviceimp.DoctorServiceImp;
+import com.hospital.serviceimp.PatientServiceImp;
+
+import lombok.RequiredArgsConstructor;
 
 //@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/appointment")
+
+@RequiredArgsConstructor
 public class AppointmentController  {
 
 	@Autowired
-    private AppointmentDAO appointmentDAO;
+    private AppointmentServiceImp appointmentService;
 
 	@Autowired
-	private PatientDAO patientDAO;
+	private PatientServiceImp patientService;
 
 	@Autowired
-	private DoctorDAO doctorDAO;
+	private DoctorServiceImp doctorService;
 	
 
 
 	@GetMapping("/appointment/getMeta")
 	public Map<String, Object> getAllMeta() {
-		List<Appointment> apps = appointmentDAO.getAll();
-		List<Patient> ptns = patientDAO.getAll();
-		List<Doctor> dcrs = doctorDAO.getAll();
+		List<Appointment> apps = appointmentService.getAllAppointment();
+		List<Patient> ptns = patientService.getAllPatient();
+		List<Doctor> dcrs = doctorService.getAllDoctor();
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("Appointment", apps);
@@ -53,56 +60,58 @@ public class AppointmentController  {
 		return map;
 	}
 	
-    @GetMapping("/appointment")
-    public List<Appointment> getAllAppointments() {
-        return appointmentDAO.getAll();
-    }
-    
-    
-    @GetMapping("/appointment/approve")
-    public List<Appointment> getAllApp() {
-        return appointmentDAO.getAllApp();
-    }
-    
-    
-    
     @GetMapping("/appointment/{id}")
-    public ResponseEntity<Appointment> getEmployeeById(@PathVariable(value = "id") long employeeId) {
-    	Appointment appointment = appointmentDAO.getAppointmentById(employeeId);
-        return ResponseEntity.ok().body(appointment);
+    public Appointment getById(@PathVariable Long id) {
+    	return appointmentService.getAppointmentById(id);
+    }
+    
+	@PostMapping("/save")
+	public Appointment save(@RequestBody Appointment appointment) {
+		return appointmentService.createAppointment(appointment);
+		
+	}
+	
+	@GetMapping("/get")
+	public List<Appointment> get(){
+		
+		return appointmentService.getAllAppointment();
+		
+	}
+	
+
+    @PutMapping("/{id}")
+    public Appointment update(@PathVariable Long id, @RequestBody Appointment appointment){
+        return appointmentService.updateAppointment(id, appointment);
     }
 
-    
-    
-    
-    @PostMapping("/appointment")
-    public Appointment createEmployee(@RequestBody Appointment appointment) {
-    	appointment.setStatus(0);
-        return appointmentDAO.save(appointment);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+    	appointmentService.deleteAppointment(id);
+		System.out.println("aman");
     }
-
     
-    @PutMapping("/appointment/{id}")
-    public ResponseEntity<Appointment> updateEmployee(@PathVariable(value = "id") int id,
-         @Validated @RequestBody Appointment appointmentDetails) {
-    	Appointment appointment = appointmentDAO.getAppointmentById(id);
-    	//appointment.setStatus(1);
-    	appointment.setStatus(appointmentDetails.getStatus()); 
-
-
-    	
-        final Appointment updatedPatient = appointmentDAO.update(appointment);
-        return ResponseEntity.ok(updatedPatient);
-    }
-
     
-    @DeleteMapping("/appointment/{id}")
-    public Map<String, Boolean> deleteAppointment(@PathVariable(value = "id") int id){
-    	Appointment appointment = appointmentDAO.getAppointmentById(id);
-    	appointmentDAO.delete(appointment);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-    }
+    
+    
+//   approved
+//  @GetMapping("/appointment/approve")
+//  public List<Appointment> getAllApp() {
+//      return appointmentDAO.getAllApp();
+//  }
+	
+  // 🔹 Get active (status = 1)
+  @GetMapping("/active")
+  public List<Appointment> getActive() {
+      return appointmentService.getActive();
+  }
+
+  // 🔹 Update status
+  @PatchMapping("/{id}/status")
+  public Appointment updateStatus(
+          @PathVariable Long id,
+          @RequestParam int status
+  ) {
+      return appointmentService.updateStatus(id, status);
+  }
 }
 

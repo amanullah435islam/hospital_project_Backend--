@@ -10,6 +10,8 @@ public interface MedicineService {
 	
 	List<Medicine> getAllMedicine();
 	
+	Medicine getMedicineById(Long id);
+	
 	Medicine updateMedicine(Long id, Medicine p);
 	
 	void deleteMedicine(Long id);

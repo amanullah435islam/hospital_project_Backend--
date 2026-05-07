@@ -6,5 +6,5 @@ import com.hospital.model.AppPayment;
 
 @Repository
 public interface IAppPaymentRepo extends JpaRepository<AppPayment, Long>{
-
+	AppPayment getAppPaymentById(Long id);
 }

@@ -10,6 +10,8 @@ public interface LabTestService {
 	
 	List<LabTest> getAllLabTest();
 	
+	LabTest getLabTestById(Long id);
+	
 	LabTest updateLabTest(Long id, LabTest p);
 	
 	void deleteLabTest(Long id);

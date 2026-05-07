@@ -11,6 +11,8 @@ public interface PrescriptionService {
 	
 	List<Prescription> getAllPrescription();
 	
+	Prescription getPrescriptionById(Long id);
+	
 	Prescription updatePrescription(Long id, Prescription p);
 	
 	void deletePrescription(Long id);

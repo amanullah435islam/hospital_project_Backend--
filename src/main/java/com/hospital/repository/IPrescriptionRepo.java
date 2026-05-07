@@ -6,5 +6,5 @@ import com.hospital.model.Prescription;
 
 @Repository
 public interface IPrescriptionRepo extends JpaRepository<Prescription, Long>{
-
+	Prescription getPrescriptionById(Long id);
 }

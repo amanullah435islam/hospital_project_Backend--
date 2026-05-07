@@ -1,39 +1,65 @@
 package com.hospital.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.hospital.dao.LabTestDAO;
 import com.hospital.model.LabTest;
+import com.hospital.serviceimp.LabTestServiceImp;
+
+import lombok.RequiredArgsConstructor;
 
 
 //@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/labtest")
-public class LabTestController {
-	@Autowired
-    private LabTestDAO labTestDAO;
 
-    @GetMapping("/labTest")
-    public List<LabTest> getAllLabTests() {
-        return labTestDAO.getAll();
-    }
+
+@RequiredArgsConstructor
+public class LabTestController {
+
+
+	@Autowired
+	private LabTestServiceImp service;
+	
 
     @GetMapping("/labTest/{id}")
-    public ResponseEntity<LabTest> getLabTestById(@PathVariable(value = "id") int id) {
-    	LabTest l = labTestDAO.getLabTestById(id);
-        return ResponseEntity.ok().body(l);
+    public LabTest getById(@PathVariable Long id) {
+        return service.getLabTestById(id);
+    }
+  
+	
+	
+	
+	@PostMapping("/save")
+	public LabTest save(@RequestBody LabTest LabTest) {
+		return service.createLabTest(LabTest);
+		
+	}
+	
+	@GetMapping("/get")
+	public List<LabTest> get(){
+		
+		return service.getAllLabTest();
+		
+	}
+	
+
+    @PutMapping("/{id}")
+    public LabTest update(@PathVariable Long id, @RequestBody LabTest LabTest){
+        return service.updateLabTest(id, LabTest);
     }
 
-    @PostMapping("/save")
-    public LabTest save(@RequestBody LabTest l) {
-        return labTestDAO.save(l);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+        service.deleteLabTest(id);
+		System.out.println("aman");
     }
 }

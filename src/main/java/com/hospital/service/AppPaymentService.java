@@ -10,6 +10,8 @@ public interface AppPaymentService {
 	
 	List<AppPayment> getAllAppPayment();
 	
+	AppPayment getAppPaymentById(Long id);
+	
 	AppPayment updateAppPayment(Long id, AppPayment p);
 	
 	void deleteAppPayment(Long id);

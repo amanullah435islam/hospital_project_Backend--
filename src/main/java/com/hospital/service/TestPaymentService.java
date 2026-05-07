@@ -12,7 +12,12 @@ public interface TestPaymentService {
 	
 	List<TestPayment> getAllTestPayment();
 	
+	TestPayment getById(Long id);
+	 
 	TestPayment updateTestPayment(Long id, TestPayment p);
 	
 	void deleteTestPayment(Long id);
+	
+	
+	List<TestPayment> getByTestCode(String testCode);
 }

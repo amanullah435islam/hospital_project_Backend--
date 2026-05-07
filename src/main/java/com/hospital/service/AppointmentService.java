@@ -10,7 +10,16 @@ public interface AppointmentService {
 	
 	List<Appointment> getAllAppointment();
 	
+	Appointment getAppointmentById(Long id);
+	
 	Appointment updateAppointment(Long id, Appointment p);
 	
 	void deleteAppointment(Long id);
+	
+	
+	
+
+	List<Appointment> getActive();
+
+    Appointment updateStatus(Long id, int status);
 }
