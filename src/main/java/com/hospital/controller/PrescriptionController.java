@@ -20,8 +20,8 @@ import lombok.RequiredArgsConstructor;
 	//@CrossOrigin(origins = "*")
 	@RestController
 	@RequestMapping("/api/prescription") 
-	
-	@RequiredArgsConstructor
+
+//	@RequiredArgsConstructor
 	public class PrescriptionController {
 
 

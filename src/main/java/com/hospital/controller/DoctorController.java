@@ -22,8 +22,9 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/doctor")
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class DoctorController {
+
 	@Autowired
 	private DoctorServiceImp service;
 	
@@ -34,13 +35,17 @@ public class DoctorController {
 		
 	}
 	
-	@GetMapping("/get")
+	@GetMapping("/getAll")
 	public List<Doctor> get(){
 		
 		return service.getAllDoctor();
 		
 	}
 	
+	@GetMapping("/{id}")
+	    public Doctor getById(@PathVariable Long id){
+	        return service.getDoctorById(id);
+	    }
 
     @PutMapping("/{id}")
     public Doctor update(@PathVariable Long id, @RequestBody Doctor doctor){

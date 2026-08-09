@@ -1,5 +1,7 @@
 package com.hospital.testservice;
 
+import com.hospital.model.Doctor;
+import com.hospital.serviceimp.DoctorServiceImp;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,58 +11,65 @@ import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
-public class PatientServiceTest {
+public class TestServiceDoctor {
 
     @Autowired
-    private PatientService patientService;
+    private DoctorServiceImp doctorService;
 
     @Test
-    public void testSavePatient() {
+    public void testSaveDoctor() {
 
-        Patient p = new Patient();
-        p.setPatientName("Rakib");
-        p.setAge(25);
-        p.setGender("Male");
-        p.setPhone("01700000000");
-        p.setPatientCode(200);
-        p.setDob(new Date());
-        p.setLastVisit(new Date());
+        Doctor p = new Doctor();
 
-        Patient saved = patientService.createPatient(p);
+        p.setDoctorCode(1001);
+        p.setDoctorName("Aman Test");
+        p.setAvailability("Morning");
+        p.setContact("01425253652");
+        p.setDescription("Senior Cardiologist");
+        p.setEmail("aman@gmail.com");
+        p.setImage("doctor1.jpg");
+        p.setRoomNumber("100x");
+        p.setSpecialize("Cardiology");
+
+        Doctor saved = doctorService.createDoctor(p);
 
         System.out.println("Saved ID: " + saved.getId());
-        System.out.println("Saved Name: " + saved.getPatientName());
+        System.out.println("Saved Name: " + saved.getDoctorName());
     }
 
     @Test
     public void testGetAll() {
-        List<Patient> list = patientService.getAllPatient();
+        List<Doctor> list = doctorService.getAllDoctor();
         System.out.println("Total: " + list.size());
     }
 
     @Test
     public void testGetById() {
-        Patient p = patientService.getPatientById(102L);
-        System.out.println(p.getPatientName());
+        Doctor p = doctorService.getDoctorById(152L);
+        System.out.println(p.getDoctorName());
     }
 
     @Test
     public void testUpdate() {
-        Patient p = new Patient();
-        p.setPatientName("Updated Name");
-        p.setAge(30);
-        p.setGender("Male");
-        p.setPhone("01700000000");
-        p.setPatientCode(100);
-        p.setLastVisit(new Date());
+        Doctor p = new Doctor();
 
-        Patient updated = patientService.updatePatient(102L, p);
-        System.out.println("Updated: " + updated.getPatientName());
+        p.setDoctorCode(152);
+        p.setDoctorName("Aman Test");
+        p.setAvailability("Morning");
+        p.setContact("01425253652");
+        p.setDescription("Senior Cardiologist");
+        p.setEmail("aman@gmail.com");
+        p.setImage("doctor1.jpg");
+        p.setRoomNumber("100x");
+        p.setSpecialize("Cardiology");
+
+        Doctor updated = doctorService.updateDoctor(152L, p);
+        System.out.println("Updated: " + updated.getDoctorName());
     }
 
     @Test
     public void testDelete() {
-        patientService.deletePatient(2L);
+        doctorService.deleteDoctor(1001L);
         System.out.println("Deleted Successfully");
     }
 }

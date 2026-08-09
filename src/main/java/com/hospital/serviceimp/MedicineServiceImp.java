@@ -2,6 +2,7 @@ package com.hospital.serviceimp;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,10 @@ import com.hospital.repository.IMedicineRepo;
 import com.hospital.service.MedicineService;
 
 @Service
+//@RequiredArgsConstructor
 public class MedicineServiceImp implements MedicineService{
 
-	@ Autowired
+	@Autowired
 	private IMedicineRepo medicineRepo;
 	
 	

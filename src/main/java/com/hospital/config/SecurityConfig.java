@@ -2,6 +2,7 @@ package com.hospital.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -20,10 +21,11 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtFilter;
+    @Autowired
+    private JwtAuthenticationFilter jwtFilter;
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,6 +37,8 @@ public class SecurityConfig {
             	    .requestMatchers("/image/**").permitAll()     
             	    .requestMatchers("/uploads/**").permitAll()     
             	    .requestMatchers("/api/**").authenticated()       
+            	    .requestMatchers("/mail/**").permitAll()    
+            	    .requestMatchers("/otp/**").permitAll()
             	)
             .formLogin(
             		form -> form.disable())  

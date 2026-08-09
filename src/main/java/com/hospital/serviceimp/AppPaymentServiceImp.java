@@ -2,17 +2,15 @@ package com.hospital.serviceimp;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;import org.springframework.stereotype.Service;
 import com.hospital.model.AppPayment;
 import com.hospital.repository.IAppPaymentRepo;
 import com.hospital.service.AppPaymentService;
-
 @Service
+//@RequiredArgsConstructor
 public class AppPaymentServiceImp implements AppPaymentService{
 
-	
 	@Autowired
 	private IAppPaymentRepo appPaymentRepo;
 	

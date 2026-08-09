@@ -20,10 +20,10 @@ import lombok.RequiredArgsConstructor;
 	@RestController
 	@RequestMapping("/api/appPayment")
 	
-	@RequiredArgsConstructor
+//	@RequiredArgsConstructor
 	public class AppPaymentController {
 
-		
+
 		@Autowired
 		private AppPaymentServiceImp service;
 

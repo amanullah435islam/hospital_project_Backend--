@@ -30,10 +30,9 @@ import lombok.RequiredArgsConstructor;
 //@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/appointment")
-
-@RequiredArgsConstructor
+//
+//@RequiredArgsConstructor
 public class AppointmentController  {
-
 	@Autowired
     private AppointmentServiceImp appointmentService;
 
@@ -42,10 +41,11 @@ public class AppointmentController  {
 
 	@Autowired
 	private DoctorServiceImp doctorService;
+
 	
 
 
-	@GetMapping("/appointment/getMeta")
+	@GetMapping("/getMeta")
 	public Map<String, Object> getAllMeta() {
 		List<Appointment> apps = appointmentService.getAllAppointment();
 		List<Patient> ptns = patientService.getAllPatient();
@@ -60,7 +60,7 @@ public class AppointmentController  {
 		return map;
 	}
 	
-    @GetMapping("/appointment/{id}")
+    @GetMapping("/{id}")
     public Appointment getById(@PathVariable Long id) {
     	return appointmentService.getAppointmentById(id);
     }
@@ -71,7 +71,7 @@ public class AppointmentController  {
 		
 	}
 	
-	@GetMapping("/get")
+	@GetMapping("/getAll")
 	public List<Appointment> get(){
 		
 		return appointmentService.getAllAppointment();
@@ -93,7 +93,7 @@ public class AppointmentController  {
     
     
     
-//   approved
+//   approved :::::::::::::
 //  @GetMapping("/appointment/approve")
 //  public List<Appointment> getAllApp() {
 //      return appointmentDAO.getAllApp();

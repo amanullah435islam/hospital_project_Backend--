@@ -2,6 +2,7 @@ package com.hospital.serviceimp;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hospital.model.TestPayment;
@@ -9,11 +10,13 @@ import com.hospital.repository.ITestPaymentRepo;
 import com.hospital.service.TestPaymentService;
 
 @Service
+//@RequiredArgsConstructor
 public class TestPaymentServiceImp implements TestPaymentService{
 
-	
 	@Autowired
 	private ITestPaymentRepo testPaymentRepo;
+
+
 	@Override
 	public TestPayment createTestPayment(TestPayment p) {
 		

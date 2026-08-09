@@ -2,6 +2,7 @@ package com.hospital.testcontroller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hospital.model.Doctor;
 import com.hospital.model.Patient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PatientControllerTest {
+public class TestControllerDoctor {
 
     @Autowired
     private MockMvc mockMvc;
@@ -29,16 +30,21 @@ public class PatientControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void testSavePatient() throws Exception {
+    public void testSaveDoctor() throws Exception {
 
-        Patient p = new Patient();
+        Doctor p = new Doctor();
 
-        p.setPatientName("Test User");
-        p.setAge(30);
-        p.setGender("Male");
-        p.setPhone("01700000000");
+        p.setDoctorCode(152);
+        p.setDoctorName("Aman Test");
+        p.setAvailability("Morning");
+        p.setContact("01425253652");
+        p.setDescription("Senior Cardiologist");
+        p.setEmail("aman@gmail.com");
+        p.setImage("doctor1.jpg");
+        p.setRoomNumber("100x");
+        p.setSpecialize("Cardiology");
 
-        mockMvc.perform(post("/api/patient/save")
+        mockMvc.perform(post("/api/doctor/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(p)))
                 .andExpect(status().isOk());
@@ -49,7 +55,7 @@ public class PatientControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testGetAll() throws Exception {
 
-        mockMvc.perform(get("/api/patient/getAll"))
+        mockMvc.perform(get("/api/doctor/getAll"))
                 .andExpect(status().isOk());
     }
 
@@ -58,7 +64,7 @@ public class PatientControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testGetById() throws Exception {
 
-        mockMvc.perform(get("/api/patient/102"))
+        mockMvc.perform(get("/api/doctor/202"))
                 .andExpect(status().isOk());
     }
 
@@ -67,14 +73,19 @@ public class PatientControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testUpdate() throws Exception {
 
-        Patient p = new Patient();
+        Doctor p = new Doctor();
 
-        p.setPatientName("Updated Name");
-        p.setAge(35);
-        p.setGender("Male");
-        p.setPhone("01800000000");
+        p.setDoctorCode(1001);
+        p.setDoctorName("Aman Test");
+        p.setAvailability("Morning");
+        p.setContact("01425253652");
+        p.setDescription("Senior Cardiologist");
+        p.setEmail("aman@gmail.com");
+        p.setImage("doctor1.jpg");
+        p.setRoomNumber("100x");
+        p.setSpecialize("Cardiology");
 
-        mockMvc.perform(put("/api/patient/102")
+        mockMvc.perform(put("/api/doctor/202")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(p)))
                 .andExpect(status().isOk());
@@ -85,7 +96,7 @@ public class PatientControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void testDelete() throws Exception {
 
-        mockMvc.perform(delete("/api/patient/2"))
+        mockMvc.perform(delete("/api/doctor/152"))
                 .andExpect(status().isOk());
     }
 

@@ -2,6 +2,7 @@ package com.hospital.serviceimp;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,10 @@ import com.hospital.repository.IDoctorRepo;
 import com.hospital.service.DoctorService;
 
 @Service
+//@RequiredArgsConstructor
 public class DoctorServiceImp implements DoctorService{
 
-	
+
 	@Autowired
 	private IDoctorRepo doctorRepo;
 	
@@ -37,13 +39,15 @@ public class DoctorServiceImp implements DoctorService{
 		
 		existing.setDoctorCode(p.getDoctorCode());
 		existing.setDoctorName(p.getDoctorName());
-		existing.setEmail(p.getEmail());
+		existing.setSpecialize(p.getSpecialize());
+		existing.setContact(p.getContact());	
 		existing.setAvailability(p.getAvailability());
-		existing.setContact(p.getContact());
+		existing.setEmail(p.getEmail());
+		existing.setRoomNumber(p.getRoomNumber());
 		existing.setDescription(p.getDescription());
 		existing.setImage(p.getImage());
-		existing.setRoomNumber(p.getRoomNumber());
-		existing.setSpecialize(p.getSpecialize());		
+		
+				
 		
 		return doctorRepo.save(existing);
 	}
@@ -57,7 +61,7 @@ public class DoctorServiceImp implements DoctorService{
 
 	@Override
 	public Doctor getDoctorById(Long id) {
-		// TODO Auto-generated method stub
+		
 		return doctorRepo.findById(id)
 				.orElseThrow(() -> new RuntimeException("Doctor not found with id: " + id));
 	}

@@ -22,11 +22,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/labtest")
 
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class LabTestController {
 
 
-	@Autowired
+    @Autowired
 	private LabTestServiceImp service;
 	
 

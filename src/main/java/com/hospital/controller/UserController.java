@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.hospital.config.JwtTokenProvider;
-import com.hospital.dao.UserDAO;
 import com.hospital.enums.Role;
 import com.hospital.model.User;
 import com.hospital.service.UserService;
@@ -28,9 +27,6 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    
-    @Autowired
-    private UserDAO userDAO;
     
     public UserController(AuthenticationManager authenticationManager, UserService userService,
                           PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
@@ -55,7 +51,7 @@ public class UserController {
             }
 
             // 3. Set role safely
-            Role role = request.getUserRole() != null ? request.getUserRole() : Role.Patient;
+            Role role = request.getUserRole() != null ? request.getUserRole() : Role.PATIENT;
 
             // 4. Create new user
             User user = new User();

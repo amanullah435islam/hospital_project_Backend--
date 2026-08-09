@@ -1,6 +1,8 @@
 package com.hospital.dao;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,6 +13,7 @@ import jakarta.transaction.Transactional;
 
 @Repository(value = "userDAO")
 @Transactional
+//@RequiredArgsConstructor
 public class UserDAO{
 
     @Autowired

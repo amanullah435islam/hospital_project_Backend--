@@ -2,6 +2,7 @@ package com.hospital.serviceimp;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import com.hospital.repository.IAppointmentRepo;
 import com.hospital.service.AppointmentService;
 
 @Service
+//@RequiredArgsConstructor
 public class AppointmentServiceImp implements AppointmentService{
 
 	@Autowired
@@ -34,18 +36,22 @@ public class AppointmentServiceImp implements AppointmentService{
 				.orElseThrow(() -> new RuntimeException("Appointment not found"));
 
 		existing.setAppointmentCode(p.getAppointmentCode());
-		existing.setBookingDate(p.getBookingDate());
+		
+		existing.setPatientId(p.getPatientId());
+		existing.setPatientCode(p.getPatientCode());
+		existing.setPatientName(p.getPatientName());
+		
+		existing.setDoctorId(p.getDoctorId());
+		existing.setDoctorCode(p.getDoctorCode());
+		existing.setDoctorName(p.getDoctorName());
+		
 		existing.setDate(p.getDate());
 		existing.setDepartment(p.getDepartment());
-		existing.setDoctorCode(p.getDoctorCode());
-		existing.setDoctorId(p.getDoctorId());
-		existing.setDoctorName(p.getDoctorName());
+		existing.setStatus(p.getStatus());	
 		existing.setMadicleHistry(p.getMadicleHistry());
-		existing.setPatientCode(p.getPatientCode());
-		existing.setPatientId(p.getPatientId());
-		existing.setPatientName(p.getPatientName());
+		existing.setBookingDate(p.getBookingDate());
 		existing.setPaymentStatus(p.getPaymentStatus());
-		existing.setStatus(p.getStatus());
+		
 		
 		return appointmentRepo.save(existing);
 	}

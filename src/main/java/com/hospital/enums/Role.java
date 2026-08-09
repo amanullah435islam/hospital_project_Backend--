@@ -1,9 +1,9 @@
 package com.hospital.enums;
 
 public enum Role {
-	AdminPanel,
-	Doctor,
-	Patient,
-	Staff,
+	ADMIN,
+	DOCTOR,
+	PATIENT,
+	STAFF,
 	LabPanel
 }

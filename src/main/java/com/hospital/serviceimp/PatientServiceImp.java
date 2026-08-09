@@ -1,6 +1,8 @@
 package com.hospital.serviceimp;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hospital.model.Patient;
@@ -8,6 +10,7 @@ import com.hospital.repository.IPatientRepo;
 import com.hospital.service.PatientService;
 
 @Service
+//@RequiredArgsConstructor
 public class PatientServiceImp implements PatientService{
 
 	@Autowired
@@ -31,15 +34,14 @@ public class PatientServiceImp implements PatientService{
 	    Patient existing = iPatientRepo.findById(id)
 	            .orElseThrow(() -> new RuntimeException("Patient not found"));
 
-	    existing.setPatientName(newData.getPatientName());
-	    existing.setAge(newData.getAge());
-	    existing.setGender(newData.getGender());
-	    existing.setPhone(newData.getPhone());
-	    existing.setLastVisit(newData.getLastVisit());
-	    existing.setDob(newData.getDob());
 	    existing.setPatientCode(newData.getPatientCode());
 	    existing.setPatientName(newData.getPatientName());
 	    existing.setVisitAmount(newData.getVisitAmount());
+	    existing.setAge(newData.getAge());
+	    existing.setDob(newData.getDob());
+	    existing.setGender(newData.getGender());
+	    existing.setPhone(newData.getPhone());
+	    existing.setLastVisit(newData.getLastVisit());	   	    
 
 	    return iPatientRepo.save(existing);
 	}
@@ -53,7 +55,7 @@ public class PatientServiceImp implements PatientService{
 
 	@Override
 	public Patient getPatientById(Long id) {
-		// TODO Auto-generated method stub
+		
 		return iPatientRepo.findById(id)
 	            .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
 	}

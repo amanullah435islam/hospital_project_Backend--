@@ -24,10 +24,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/medicine")
 
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class MedicineController {
 
-	@Autowired
+    @Autowired
 	private MedicineServiceImp service;
 
     @GetMapping("/medicine/{id}")

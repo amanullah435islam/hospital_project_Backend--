@@ -22,8 +22,9 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/patient")
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class PatientController {
+
 	@Autowired
 	private PatientServiceImp service;
 	
@@ -33,8 +34,8 @@ public class PatientController {
 		return service.createPatient(patient);
 		
 	}
-	
-	@GetMapping("/get")
+
+	@GetMapping("/getAll")
 	public List<Patient> get(){
 		
 		return service.getAllPatient();
