@@ -48,28 +48,7 @@
 			        <artifactId>mysql-connector-j</artifactId>
 			        <scope>runtime</scope>
 		    	</dependency>
-		       
-		       
-		<!--     <dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-data-jdbc</artifactId>
-				</dependency>
-				
-		  <dependency>
-		        <groupId>org.springframework.boot</groupId>
-		        <artifactId>spring-boot-starter</artifactId>
-		    </dependency>
-			-->
 
-			    <dependency>
-			        <groupId>com.fasterxml.jackson.datatype</groupId>
-			        <artifactId>jackson-datatype-jsr310</artifactId>
-			    </dependency>
-	
-			    <dependency>
-			        <groupId>org.apache.tomcat.embed</groupId>
-			        <artifactId>tomcat-embed-jasper</artifactId>
-			    </dependency>
 		    		    
 				<!-- Lombok dependency for reducing boilerplate code. -->
 				    <dependency>
@@ -77,15 +56,7 @@
 				        <artifactId>lombok</artifactId>
 				        <optional>true</optional>
 				    </dependency>
-				    				    
-				    <dependency>
-					    <groupId>jakarta.servlet.jsp.jstl</groupId>
-					    <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-					</dependency>
-					<dependency>
-					    <groupId>org.glassfish.web</groupId>
-					    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-					</dependency>
+
 
 				    <dependency>
 				        <groupId>org.springframework.boot</groupId>
@@ -104,74 +75,6 @@
 					    <artifactId>spring-security-test</artifactId>
 					    <scope>test</scope>
 					</dependency>
-
-		    <dependency>
-		        <groupId>com.google.code.gson</groupId>
-		        <artifactId>gson</artifactId>
-		    </dependency>
-		 
-		    	<dependency>
-				    <groupId>org.springframework.security</groupId>
-				    <artifactId>spring-security-web</artifactId>
-				</dependency>
-												
-				<dependency>		    
-				    <groupId>org.springframework.boot</groupId>
-				    <artifactId>spring-boot-starter-security</artifactId>
-				</dependency>
-				
-				
-				
-				 <!-- JWT Library -->
-			    <dependency>
-			        <groupId>io.jsonwebtoken</groupId>
-			        <artifactId>jjwt-api</artifactId>
-			        <version>0.11.5</version>
-			    </dependency>
-			    <dependency>
-			        <groupId>io.jsonwebtoken</groupId>
-			        <artifactId>jjwt-impl</artifactId>
-			        <version>0.11.5</version>
-			        <scope>runtime</scope>
-			    </dependency>
-			    <dependency>
-			        <groupId>io.jsonwebtoken</groupId>
-			        <artifactId>jjwt-jackson</artifactId>
-			        <version>0.11.5</version>
-			        <scope>runtime</scope>
-			    </dependency>
-			    
-		    <!--Aop-->
-		    <dependency>
-			    <groupId>org.springframework.boot</groupId>
-			    <artifactId>spring-boot-starter-aop</artifactId>
-		   </dependency>
-   
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>2.21.2</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<scope>test</scope>
-			</dependency>
-
-
-
-
-	<!--	<dependency>
-		    <groupId>org.eclipse.angus</groupId>
-		    <artifactId>jakarta.mail</artifactId>
-		</dependency>-->
-
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
-
 
 		</dependencies>
 
