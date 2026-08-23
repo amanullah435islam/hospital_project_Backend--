@@ -1,11 +1,17 @@
-package com.hospital.model;
+package com.hospital.patient.entity;
 
-import com.hospital.common.BaseEntity;
+import com.hospital.appointment.entity.Appointment;
+import com.hospital.common.entity.BaseEntity;
 import com.hospital.enums.BloodGroup;
 import com.hospital.enums.Gender;
 import com.hospital.enums.PatientStatus;
+import com.hospital.medical.entity.MedicalRecord;
+import com.hospital.prescription.entity.Prescription;
+import com.hospital.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(
@@ -30,6 +36,14 @@ public class Patient extends BaseEntity {
             length = 30
     )
     private String patientCode;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "user_id",
+            nullable = false,
+            unique = true
+    )
+    private User user;
 
     @Column(nullable = false)
     private String firstName;
@@ -56,4 +70,13 @@ public class Patient extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private PatientStatus status;
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private Set<Appointment> appointments = new HashSet<>();
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private Set<MedicalRecord> medicalRecords = new HashSet<>();
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private Set<Prescription> prescriptions = new HashSet<>();
 }

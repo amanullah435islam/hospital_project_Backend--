@@ -1,6 +1,7 @@
-package com.hospital.model;
+package com.hospital.role.entity;
 
-import com.hospital.common.BaseEntity;
+import com.hospital.common.entity.BaseEntity;
+import com.hospital.user.entity.User;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,12 +19,6 @@ public class Role extends BaseEntity {
 
     private String description;
 
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
 }

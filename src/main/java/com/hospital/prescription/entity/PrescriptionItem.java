@@ -1,6 +1,7 @@
-package com.hospital.model;
+package com.hospital.prescription.entity;
 
-import com.hospital.common.BaseEntity;
+import com.hospital.common.entity.BaseEntity;
+import com.hospital.medicine.entity.Medicine;
 import jakarta.persistence.*;
 
 @Entity

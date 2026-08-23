@@ -1,24 +1,19 @@
-package com.hospital.model;
+package com.hospital.medical.entity;
 
-import com.hospital.common.BaseEntity;
-import com.hospital.enums.PrescriptionStatus;
+import com.hospital.appointment.entity.Appointment;
+import com.hospital.common.entity.BaseEntity;
+import com.hospital.doctor.entity.Doctor;
+import com.hospital.patient.entity.Patient;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "prescriptions")
-public class Prescription extends BaseEntity {
+@Table(name = "medical_records")
+public class MedicalRecord extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(
-            nullable = false,
-            unique = true,
-            length = 30
-    )
-    private String prescriptionCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -34,18 +29,22 @@ public class Prescription extends BaseEntity {
     )
     private Doctor doctor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "appointment_id",
-            nullable = false
+            nullable = false,
+            unique = true
     )
     private Appointment appointment;
 
-    private LocalDateTime prescriptionDate;
+    @Column(columnDefinition = "TEXT")
+    private String diagnosis;
+
+    @Column(columnDefinition = "TEXT")
+    private String symptoms;
 
     @Column(columnDefinition = "TEXT")
     private String notes;
 
-    @Enumerated(EnumType.STRING)
-    private PrescriptionStatus status;
+    private LocalDateTime recordDate;
 }

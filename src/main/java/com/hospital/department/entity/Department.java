@@ -1,8 +1,12 @@
-package com.hospital.model;
+package com.hospital.department.entity;
 
-import com.hospital.common.BaseEntity;
+import com.hospital.common.entity.BaseEntity;
 import com.hospital.enums.DepartmentStatus;
+import com.hospital.doctor.entity.Doctor;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "departments")
@@ -20,4 +24,6 @@ public class Department extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private DepartmentStatus status;
 
+    @OneToMany(mappedBy = "department")
+    private Set<Doctor> doctors = new HashSet<>();
 }

@@ -1,6 +1,6 @@
 package com.hospital.model;
 
-import com.hospital.common.BaseEntity;
+import com.hospital.common.entity.BaseEntity;
 import com.hospital.enums.PaymentMethod;
 import com.hospital.enums.PaymentStatus;
 import jakarta.persistence.*;

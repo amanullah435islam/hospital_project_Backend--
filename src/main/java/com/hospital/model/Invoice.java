@@ -1,7 +1,9 @@
 package com.hospital.model;
 
-import com.hospital.common.BaseEntity;
+import com.hospital.appointment.entity.Appointment;
+import com.hospital.common.entity.BaseEntity;
 import com.hospital.enums.InvoiceStatus;
+import com.hospital.patient.entity.Patient;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

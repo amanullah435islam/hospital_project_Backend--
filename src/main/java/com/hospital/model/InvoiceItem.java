@@ -1,6 +1,6 @@
 package com.hospital.model;
 
-import com.hospital.common.BaseEntity;
+import com.hospital.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
