@@ -13,8 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 //@ComponentScan(basePackages = "com.hospital")
-//@EntityScan(basePackages = { "com.hospital.model" })
-//@EnableJpaRepositories(basePackages = { "com.hospital" })
+@EntityScan(basePackages = { "com.hospital" })
+@EnableJpaRepositories(basePackages = { "com.hospital" })
 
 
 @EnableJpaAuditing

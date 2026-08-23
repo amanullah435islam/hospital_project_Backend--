@@ -1,6 +1,8 @@
-package com.hospital.enums;
+package com.hospital.user.entity;
+
 
 public enum UserStatus {
+
     ACTIVE,
     INACTIVE,
     LOCKED

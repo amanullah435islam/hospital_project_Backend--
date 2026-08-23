@@ -72,7 +72,13 @@
 				<optional>true</optional>
 			</dependency>
 
-		<!-- Testing -->
+		<!-- Security - আমরা পরের phase-এ configure করব -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-security</artifactId>
+			</dependency>
+
+			<!-- Testing -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
