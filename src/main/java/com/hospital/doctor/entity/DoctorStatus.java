@@ -1,6 +1,8 @@
-package com.hospital.enums;
+package com.hospital.doctor.entity;
+
 
 public enum DoctorStatus {
+
     ACTIVE,
     INACTIVE,
     ON_LEAVE
