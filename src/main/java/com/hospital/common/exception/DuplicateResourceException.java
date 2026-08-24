@@ -1,4 +1,9 @@
 package com.hospital.common.exception;
 
-public class DuplicateResourceException {
+public class DuplicateResourceException
+        extends RuntimeException {
+
+    public DuplicateResourceException(String message) {
+        super(message);
+    }
 }

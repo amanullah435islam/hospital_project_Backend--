@@ -1,5 +1,7 @@
 package com.hospital.user.service;
 
+import com.hospital.common.exception.DuplicateResourceException;
+import com.hospital.common.exception.ResourceNotFoundException;
 import com.hospital.role.entity.Role;
 import com.hospital.role.entity.RoleName;
 import com.hospital.role.repository.RoleRepository;
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(
                 request.getUsername())) {
 
-            throw new IllegalArgumentException(
+            throw new DuplicateResourceException(
                     "Username already exists"
             );
         }
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(
                 request.getEmail())) {
 
-            throw new IllegalArgumentException(
+            throw new DuplicateResourceException(
                     "Email already exists"
             );
         }
@@ -76,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() ->
-                        new IllegalArgumentException(
+                        new ResourceNotFoundException(
                                 "User not found with id: " + id
                         )
                 );
@@ -105,7 +107,7 @@ public class UserServiceImpl implements UserService {
                     roleRepository
                             .findByName(RoleName.PATIENT)
                             .orElseThrow(() ->
-                                    new IllegalArgumentException(
+                                    new ResourceNotFoundException(
                                             "Default role not found"
                                     )
                             );
@@ -122,7 +124,7 @@ public class UserServiceImpl implements UserService {
                         roleRepository
                                 .findByName(roleName)
                                 .orElseThrow(() ->
-                                        new IllegalArgumentException(
+                                        new ResourceNotFoundException(
                                                 "Role not found: "
                                                         + roleName
                                         )

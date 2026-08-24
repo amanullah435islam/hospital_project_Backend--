@@ -5,4 +5,7 @@ VALUES
     ('RECEPTIONIST', 'Reception desk staff', NOW(), NOW()),
     ('PHARMACIST', 'Pharmacy staff', NOW(), NOW()),
     ('ACCOUNTANT', 'Billing and accounting staff', NOW(), NOW()),
-    ('PATIENT', 'Hospital patient', NOW(), NOW());
+    ('PATIENT', 'Hospital patient', NOW(), NOW())
+    ON DUPLICATE KEY UPDATE
+                         description = VALUES(description),
+                         updated_at = NOW();

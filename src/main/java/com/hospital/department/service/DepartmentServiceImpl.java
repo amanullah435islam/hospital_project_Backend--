@@ -1,5 +1,7 @@
 package com.hospital.department.service;
 
+import com.hospital.common.exception.DuplicateResourceException;
+import com.hospital.common.exception.ResourceNotFoundException;
 import com.hospital.department.dto.DepartmentCreateRequest;
 import com.hospital.department.dto.DepartmentResponse;
 import com.hospital.department.entity.Department;
@@ -26,7 +28,7 @@ public class DepartmentServiceImpl
         if (departmentRepository.existsByNameIgnoreCase(
                 request.getName()
         )) {
-            throw new IllegalArgumentException(
+            throw new DuplicateResourceException(
                     "Department already exists"
             );
         }
@@ -49,7 +51,7 @@ public class DepartmentServiceImpl
         Department department =
                 departmentRepository.findById(id)
                         .orElseThrow(() ->
-                                new IllegalArgumentException(
+                                new ResourceNotFoundException(
                                         "Department not found with id: "
                                                 + id
                                 )

@@ -1,5 +1,7 @@
 package com.hospital.doctor.service;
 
+import com.hospital.common.exception.DuplicateResourceException;
+import com.hospital.common.exception.ResourceNotFoundException;
 import com.hospital.department.entity.Department;
 import com.hospital.department.repository.DepartmentRepository;
 import com.hospital.doctor.dto.DoctorCreateRequest;
@@ -34,7 +36,7 @@ public class DoctorServiceImpl
         if (doctorRepository.existsByDoctorCode(
                 request.getDoctorCode()
         )) {
-            throw new IllegalArgumentException(
+            throw new DuplicateResourceException(
                     "Doctor code already exists"
             );
         }
@@ -42,7 +44,7 @@ public class DoctorServiceImpl
         if (doctorRepository.existsByLicenseNumber(
                 request.getLicenseNumber()
         )) {
-            throw new IllegalArgumentException(
+            throw new DuplicateResourceException(
                     "License number already exists"
             );
         }
@@ -50,7 +52,7 @@ public class DoctorServiceImpl
         if (doctorRepository.existsByUserId(
                 request.getUserId()
         )) {
-            throw new IllegalArgumentException(
+            throw new DuplicateResourceException(
                     "This user already has a doctor profile"
             );
         }
@@ -58,7 +60,7 @@ public class DoctorServiceImpl
         User user = userRepository.findById(
                 request.getUserId()
         ).orElseThrow(() ->
-                new IllegalArgumentException(
+                new ResourceNotFoundException(
                         "User not found with id: "
                                 + request.getUserId()
                 )
@@ -68,7 +70,7 @@ public class DoctorServiceImpl
                 departmentRepository.findById(
                         request.getDepartmentId()
                 ).orElseThrow(() ->
-                        new IllegalArgumentException(
+                        new ResourceNotFoundException(
                                 "Department not found with id: "
                                         + request.getDepartmentId()
                         )
@@ -116,7 +118,7 @@ public class DoctorServiceImpl
         Doctor doctor =
                 doctorRepository.findById(id)
                         .orElseThrow(() ->
-                                new IllegalArgumentException(
+                                new ResourceNotFoundException(
                                         "Doctor not found with id: "
                                                 + id
                                 )
