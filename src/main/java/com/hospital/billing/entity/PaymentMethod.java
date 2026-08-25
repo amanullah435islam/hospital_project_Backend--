@@ -1,6 +1,7 @@
-package com.hospital.enums;
+package com.hospital.billing.entity;
 
 public enum PaymentMethod {
+
     CASH,
     CARD,
     MOBILE_BANKING,
