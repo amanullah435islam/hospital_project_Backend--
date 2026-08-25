@@ -548,4 +548,153 @@ public class AppointmentServiceImpl
                 )
         ).trim();
     }
+
+
+    /*
+     * =====================================
+     * 7. Update Status on Appointment
+     * =====================================
+     */
+
+    @Override
+    public void updateAppointmentStatus(
+            Long appointmentId,
+            AppointmentStatus newStatus
+    ) {
+
+        Appointment appointment =
+                appointmentRepository.findById(
+                        appointmentId
+                ).orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Appointment not found with id: "
+                                        + appointmentId
+                        )
+                );
+
+        AppointmentStatus currentStatus =
+                appointment.getStatus();
+
+
+        /*
+         * =========================================
+         * Same status
+         * =========================================
+         */
+
+        if (currentStatus == newStatus) {
+
+            throw new BadRequestException(
+                    "Appointment is already "
+                            + newStatus
+            );
+        }
+
+
+        /*
+         * =========================================
+         * CANCELLED
+         * =========================================
+         */
+
+        if (currentStatus
+                == AppointmentStatus.CANCELLED) {
+
+            throw new BadRequestException(
+                    "Cancelled appointment cannot be modified"
+            );
+        }
+
+
+        /*
+         * =========================================
+         * COMPLETED
+         * =========================================
+         */
+
+        if (currentStatus
+                == AppointmentStatus.COMPLETED) {
+
+            throw new BadRequestException(
+                    "Completed appointment cannot be modified"
+            );
+        }
+
+
+        /*
+         * =========================================
+         * NO_SHOW
+         * =========================================
+         */
+
+        if (currentStatus
+                == AppointmentStatus.NO_SHOW) {
+
+            throw new BadRequestException(
+                    "No-show appointment cannot be modified"
+            );
+        }
+
+
+        /*
+         * =========================================
+         * Valid State Transition
+         * =========================================
+         */
+
+        boolean validTransition =
+                isValidTransition(
+                        currentStatus,
+                        newStatus
+                );
+
+        if (!validTransition) {
+
+            throw new BadRequestException(
+                    "Invalid appointment status transition: "
+                            + currentStatus
+                            + " → "
+                            + newStatus
+            );
+        }
+
+
+        appointment.setStatus(
+                newStatus
+        );
+    }
+
+
+    /*
+     * =====================================
+     * 7. Extra Sub code
+     * =====================================
+     */
+
+    private boolean isValidTransition(
+            AppointmentStatus current,
+            AppointmentStatus next
+    ) {
+
+        return switch (current) {
+
+            case SCHEDULED ->
+                    next == AppointmentStatus.CONFIRMED
+                            || next == AppointmentStatus.CANCELLED
+                            || next == AppointmentStatus.NO_SHOW;
+
+            case CONFIRMED ->
+                    next == AppointmentStatus.IN_PROGRESS
+                            || next == AppointmentStatus.CANCELLED
+                            || next == AppointmentStatus.NO_SHOW;
+
+            case IN_PROGRESS ->
+                    next == AppointmentStatus.COMPLETED;
+
+            case COMPLETED,
+                 CANCELLED,
+                 NO_SHOW ->
+                    false;
+        };
+    }
 }

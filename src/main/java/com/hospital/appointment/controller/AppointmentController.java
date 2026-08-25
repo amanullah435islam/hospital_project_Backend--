@@ -2,6 +2,7 @@ package com.hospital.appointment.controller;
 
 import com.hospital.appointment.dto.AppointmentCreateRequest;
 import com.hospital.appointment.dto.AppointmentResponse;
+import com.hospital.appointment.entity.AppointmentStatus;
 import com.hospital.appointment.service.AppointmentService;
 import com.hospital.common.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -139,6 +140,31 @@ public class AppointmentController {
                 ApiResponse.success(
                         "Patient appointments retrieved successfully",
                         response
+                )
+        );
+    }
+
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<
+            ApiResponse<Void>
+            > updateAppointmentStatus(
+
+            @PathVariable Long id,
+
+            @RequestParam
+            AppointmentStatus status
+    ) {
+
+        appointmentService.updateAppointmentStatus(
+                id,
+                status
+        );
+
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Appointment status updated successfully",
+                        null
                 )
         );
     }
