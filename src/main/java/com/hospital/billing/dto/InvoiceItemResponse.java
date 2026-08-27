@@ -10,6 +10,12 @@ public class InvoiceItemResponse {
 
     private Long id;
 
+    private Long serviceId;
+
+    private String serviceCode;
+
+    private String serviceName;
+
     private String description;
 
     private BigDecimal unitPrice;

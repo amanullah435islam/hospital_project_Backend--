@@ -1,6 +1,7 @@
 package com.hospital.billing.entity;
 
 import com.hospital.common.entity.BaseEntity;
+import com.hospital.service.entity.HospitalService;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,10 @@ import java.math.BigDecimal;
                 @Index(
                         name = "idx_invoice_item_invoice",
                         columnList = "invoice_id"
+                ),
+                @Index(
+                        name = "idx_invoice_item_service",
+                        columnList = "service_id"
                 )
         }
 )
@@ -28,6 +33,13 @@ public class InvoiceItem extends BaseEntity {
             nullable = false
     )
     private Invoice invoice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "service_id",
+            nullable = false
+    )
+    private HospitalService service;
 
     @Column(
             nullable = false,
@@ -53,6 +65,7 @@ public class InvoiceItem extends BaseEntity {
                 BigDecimal.valueOf(quantity)
         );
     }
+
 }
 
 

@@ -13,6 +13,9 @@ import com.hospital.common.exception.BadRequestException;
 import com.hospital.common.exception.ResourceNotFoundException;
 import com.hospital.patient.entity.Patient;
 import com.hospital.patient.repository.PatientRepository;
+import com.hospital.service.entity.HospitalService;
+import com.hospital.service.entity.ServiceStatus;
+import com.hospital.service.repository.HospitalServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,11 +35,18 @@ public class InvoiceServiceImpl
 
     private final PatientRepository patientRepository;
 
+    private final HospitalServiceRepository
+            hospitalServiceRepository;
+
 
     @Override
     public InvoiceResponse createInvoice(
             InvoiceCreateRequest request
     ) {
+
+        // ==========================================
+        // FIND PATIENT
+        // ==========================================
 
         Patient patient =
                 patientRepository.findById(
@@ -48,6 +58,10 @@ public class InvoiceServiceImpl
                         )
                 );
 
+
+        // ==========================================
+        // CREATE INVOICE
+        // ==========================================
 
         Invoice invoice =
                 new Invoice();
@@ -68,11 +82,21 @@ public class InvoiceServiceImpl
                 InvoiceStatus.UNPAID
         );
 
+
+        // ==========================================
+        // DISCOUNT
+        // ==========================================
+
         invoice.setDiscount(
                 request.getDiscount() != null
                         ? request.getDiscount()
                         : BigDecimal.ZERO
         );
+
+
+        // ==========================================
+        // TAX
+        // ==========================================
 
         invoice.setTax(
                 request.getTax() != null
@@ -80,34 +104,102 @@ public class InvoiceServiceImpl
                         : BigDecimal.ZERO
         );
 
+
         invoice.setNotes(
                 request.getNotes()
         );
 
+
+        // ==========================================
+        // INVOICE ITEMS
+        // ==========================================
 
         for (
                 InvoiceItemRequest itemRequest
                 : request.getItems()
         ) {
 
+            HospitalService hospitalService =
+                    hospitalServiceRepository
+                            .findById(
+                                    itemRequest.getServiceId()
+                            )
+                            .orElseThrow(() ->
+                                    new ResourceNotFoundException(
+                                            "Hospital service not found with id: "
+                                                    + itemRequest
+                                                    .getServiceId()
+                                    )
+                            );
+
+
+            // ======================================
+            // ONLY ACTIVE SERVICE CAN BE BILLED
+            // ======================================
+
+            if (
+                    hospitalService.getStatus()
+                            != ServiceStatus.ACTIVE
+            ) {
+
+                throw new BadRequestException(
+                        "Service is not active: "
+                                + hospitalService.getName()
+                );
+            }
+
+
             InvoiceItem item =
                     new InvoiceItem();
 
-            item.setDescription(
-                    itemRequest.getDescription()
+
+            // ======================================
+            // SERVICE
+            // ======================================
+
+            item.setService(
+                    hospitalService
             );
 
-            item.setUnitPrice(
-                    itemRequest.getUnitPrice()
+
+            // ======================================
+            // SNAPSHOT DESCRIPTION
+            // ======================================
+
+            item.setDescription(
+                    hospitalService.getName()
             );
+
+
+            // ======================================
+            // SNAPSHOT PRICE
+            // ======================================
+
+            item.setUnitPrice(
+                    hospitalService.getDefaultPrice()
+            );
+
+
+            // ======================================
+            // QUANTITY
+            // ======================================
 
             item.setQuantity(
                     itemRequest.getQuantity()
             );
 
+
+            // ======================================
+            // ADD TO INVOICE
+            // ======================================
+
             invoice.addItem(item);
         }
 
+
+        // ==========================================
+        // SAVE
+        // ==========================================
 
         Invoice saved =
                 invoiceRepository.save(
@@ -117,7 +209,6 @@ public class InvoiceServiceImpl
 
         return mapToResponse(saved);
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -304,6 +395,17 @@ public class InvoiceServiceImpl
                                         .builder()
                                         .id(
                                                 item.getId()
+                                        )
+                                        .serviceId(
+                                                item.getService().getId()
+                                        )
+                                        .serviceCode(
+                                                item.getService()
+                                                        .getServiceCode()
+                                        )
+                                        .serviceName(
+                                                item.getService()
+                                                        .getName()
                                         )
                                         .description(
                                                 item.getDescription()

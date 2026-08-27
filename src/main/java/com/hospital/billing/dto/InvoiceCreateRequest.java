@@ -23,10 +23,16 @@ public class InvoiceCreateRequest {
     @Valid
     private List<InvoiceItemRequest> items;
 
-    @DecimalMin("0.00")
+    @DecimalMin(
+            value = "0.00",
+            message = "Discount cannot be negative"
+    )
     private BigDecimal discount;
 
-    @DecimalMin("0.00")
+    @DecimalMin(
+            value = "0.00",
+            message = "Tax cannot be negative"
+    )
     private BigDecimal tax;
 
     @Size(max = 1000)
