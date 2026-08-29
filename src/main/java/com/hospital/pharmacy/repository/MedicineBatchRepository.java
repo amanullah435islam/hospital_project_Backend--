@@ -23,4 +23,11 @@ public interface MedicineBatchRepository
             Integer quantity,
             LocalDate date
     );
+
+    List<MedicineBatch>
+    findByMedicineIdAndQuantityGreaterThanAndExpiryDateAfterOrderByExpiryDateAsc(
+            Long medicineId,
+            Integer quantity,
+            LocalDate expiryDate
+    );
 }
