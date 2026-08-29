@@ -1,5 +1,6 @@
 package com.hospital.medicine.entity;
 
+
 import com.hospital.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,6 +24,10 @@ import lombok.Setter;
                 @Index(
                         name = "idx_medicine_generic_name",
                         columnList = "generic_name"
+                ),
+                @Index(
+                        name = "idx_medicine_status",
+                        columnList = "status"
                 )
         }
 )
@@ -34,6 +39,7 @@ public class Medicine extends BaseEntity {
     @Column(
             name = "medicine_code",
             nullable = false,
+            unique = true,
             length = 30
     )
     private String medicineCode;
@@ -55,14 +61,6 @@ public class Medicine extends BaseEntity {
     )
     private String strength;
 
-    /*
-     * Tablet
-     * Capsule
-     * Syrup
-     * Injection
-     * Cream
-     * etc.
-     */
     @Column(
             length = 50
     )
@@ -76,7 +74,6 @@ public class Medicine extends BaseEntity {
     private MedicineStatus status =
             MedicineStatus.ACTIVE;
 }
-
 
 
 //@Entity
@@ -105,3 +102,4 @@ public class Medicine extends BaseEntity {
 //    @Enumerated(EnumType.STRING)
 //    private MedicineStatus status;
 //}
+

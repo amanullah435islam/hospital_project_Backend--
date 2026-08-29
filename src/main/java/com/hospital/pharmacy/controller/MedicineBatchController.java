@@ -3,6 +3,7 @@ package com.hospital.pharmacy.controller;
 import com.hospital.common.response.ApiResponse;
 import com.hospital.pharmacy.dto.MedicineBatchCreateRequest;
 import com.hospital.pharmacy.dto.MedicineBatchResponse;
+import com.hospital.pharmacy.dto.StockTransactionResponse;
 import com.hospital.pharmacy.service.MedicineBatchService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,6 @@ public class MedicineBatchController {
     private final MedicineBatchService
             medicineBatchService;
 
-
-    // ==========================================
-    // CREATE BATCH
-    // ==========================================
 
     @PostMapping
     public ResponseEntity<
@@ -46,10 +43,6 @@ public class MedicineBatchController {
     }
 
 
-    // ==========================================
-    // GET BY ID
-    // ==========================================
-
     @GetMapping("/{id}")
     public ResponseEntity<
             ApiResponse<MedicineBatchResponse>
@@ -66,10 +59,6 @@ public class MedicineBatchController {
         );
     }
 
-
-    // ==========================================
-    // GET BY MEDICINE
-    // ==========================================
 
     @GetMapping("/medicine/{medicineId}")
     public ResponseEntity<
@@ -90,10 +79,6 @@ public class MedicineBatchController {
     }
 
 
-    // ==========================================
-    // AVAILABLE
-    // ==========================================
-
     @GetMapping("/available")
     public ResponseEntity<
             ApiResponse<List<MedicineBatchResponse>>
@@ -107,4 +92,5 @@ public class MedicineBatchController {
                 )
         );
     }
+
 }

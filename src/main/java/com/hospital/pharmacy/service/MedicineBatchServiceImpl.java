@@ -3,19 +3,20 @@ package com.hospital.pharmacy.service;
 import com.hospital.common.exception.BadRequestException;
 import com.hospital.common.exception.DuplicateResourceException;
 import com.hospital.common.exception.ResourceNotFoundException;
+import com.hospital.medicine.entity.Medicine;
+import com.hospital.medicine.entity.MedicineStatus;
+import com.hospital.medicine.repository.MedicineRepository;
 import com.hospital.pharmacy.dto.MedicineBatchCreateRequest;
 import com.hospital.pharmacy.dto.MedicineBatchResponse;
-import com.hospital.pharmacy.entity.Medicine;
 import com.hospital.pharmacy.entity.MedicineBatch;
-import com.hospital.pharmacy.entity.MedicineStatus;
 import com.hospital.pharmacy.entity.StockTransaction;
 import com.hospital.pharmacy.entity.StockTransactionType;
 import com.hospital.pharmacy.repository.MedicineBatchRepository;
-import com.hospital.pharmacy.repository.MedicineRepository;
 import com.hospital.pharmacy.repository.StockTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,33 +36,23 @@ public class MedicineBatchServiceImpl
             stockTransactionRepository;
 
 
-    // ==========================================
-    // CREATE BATCH
-    // ==========================================
-
     @Override
     public MedicineBatchResponse createBatch(
             MedicineBatchCreateRequest request
     ) {
 
-        // --------------------------------------
-        // FIND MEDICINE
-        // --------------------------------------
-
         Medicine medicine =
-                medicineRepository.findById(
-                        request.getMedicineId()
-                ).orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Medicine not found with id: "
-                                        + request.getMedicineId()
+                medicineRepository
+                        .findById(
+                                request.getMedicineId()
                         )
-                );
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Medicine not found with id: "
+                                                + request.getMedicineId()
+                                )
+                        );
 
-
-        // --------------------------------------
-        // MEDICINE MUST BE ACTIVE
-        // --------------------------------------
 
         if (
                 medicine.getStatus()
@@ -75,13 +66,8 @@ public class MedicineBatchServiceImpl
         }
 
 
-        // --------------------------------------
-        // DUPLICATE BATCH CHECK
-        // --------------------------------------
-
         String batchNumber =
-                request.getBatchNumber()
-                        .trim();
+                request.getBatchNumber().trim();
 
 
         if (
@@ -93,15 +79,11 @@ public class MedicineBatchServiceImpl
         ) {
 
             throw new DuplicateResourceException(
-                    "Batch already exists for medicine: "
+                    "Batch already exists: "
                             + batchNumber
             );
         }
 
-
-        // --------------------------------------
-        // CREATE BATCH
-        // --------------------------------------
 
         MedicineBatch batch =
                 new MedicineBatch();
@@ -136,10 +118,6 @@ public class MedicineBatchServiceImpl
                         batch
                 );
 
-
-        // --------------------------------------
-        // CREATE STOCK-IN TRANSACTION
-        // --------------------------------------
 
         StockTransaction transaction =
                 new StockTransaction();
@@ -177,26 +155,17 @@ public class MedicineBatchServiceImpl
     }
 
 
-    // ==========================================
-    // GET BY ID
-    // ==========================================
-
     @Override
     @Transactional(readOnly = true)
     public MedicineBatchResponse getBatchById(
             Long id
     ) {
 
-        MedicineBatch batch =
-                findBatch(id);
-
-        return mapToResponse(batch);
+        return mapToResponse(
+                findBatch(id)
+        );
     }
 
-
-    // ==========================================
-    // GET BY MEDICINE
-    // ==========================================
 
     @Override
     @Transactional(readOnly = true)
@@ -227,10 +196,6 @@ public class MedicineBatchServiceImpl
     }
 
 
-    // ==========================================
-    // AVAILABLE BATCHES
-    // ==========================================
-
     @Override
     @Transactional(readOnly = true)
     public List<MedicineBatchResponse>
@@ -247,10 +212,6 @@ public class MedicineBatchServiceImpl
     }
 
 
-    // ==========================================
-    // FIND BATCH
-    // ==========================================
-
     private MedicineBatch findBatch(
             Long id
     ) {
@@ -266,13 +227,12 @@ public class MedicineBatchServiceImpl
     }
 
 
-    // ==========================================
-    // MAPPER
-    // ==========================================
-
     private MedicineBatchResponse mapToResponse(
             MedicineBatch batch
     ) {
+
+        Medicine medicine =
+                batch.getMedicine();
 
         return MedicineBatchResponse
                 .builder()
@@ -280,12 +240,22 @@ public class MedicineBatchServiceImpl
                         batch.getId()
                 )
                 .medicineId(
-                        batch.getMedicine()
-                                .getId()
+                        medicine.getId()
+                )
+                .medicineCode(
+                        medicine.getMedicineCode()
                 )
                 .medicineName(
-                        batch.getMedicine()
-                                .getName()
+                        medicine.getName()
+                )
+                .genericName(
+                        medicine.getGenericName()
+                )
+                .strength(
+                        medicine.getStrength()
+                )
+                .form(
+                        medicine.getForm()
                 )
                 .batchNumber(
                         batch.getBatchNumber()

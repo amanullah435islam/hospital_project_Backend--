@@ -1,6 +1,7 @@
 package com.hospital.pharmacy.entity;
 
 import com.hospital.common.entity.BaseEntity;
+import com.hospital.medicine.entity.Medicine;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

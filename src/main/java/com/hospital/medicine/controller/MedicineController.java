@@ -72,6 +72,26 @@ public class MedicineController {
     }
 
 
+// ==========================================
+// GET ACTIVE MEDICINES
+// ==========================================
+
+    @GetMapping("/active")
+    public ResponseEntity<
+            ApiResponse<List<MedicineResponse>>
+            > getActiveMedicines() {
+
+        List<MedicineResponse> medicines =
+                medicineService.getActiveMedicines();
+
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Active medicines retrieved successfully",
+                        medicines
+                )
+        );
+    }
+
     // ==========================================
     // SEARCH
     // ==========================================

@@ -156,6 +156,19 @@ public class MedicineServiceImpl
                 .toList();
     }
 
+    @Override
+    public List<MedicineResponse> getActiveMedicines() {
+
+        List<Medicine> medicines =
+                medicineRepository.findByStatus(
+                        MedicineStatus.ACTIVE
+                );
+
+        return medicines.stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
 
     // ==========================================
     // UPDATE

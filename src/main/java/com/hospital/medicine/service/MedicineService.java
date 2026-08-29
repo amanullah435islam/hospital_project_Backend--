@@ -1,5 +1,6 @@
 package com.hospital.medicine.service;
 
+
 import com.hospital.medicine.dto.MedicineCreateRequest;
 import com.hospital.medicine.dto.MedicineResponse;
 import com.hospital.medicine.dto.MedicineUpdateRequest;
@@ -22,6 +23,8 @@ public interface MedicineService {
             String name
     );
 
+    List<MedicineResponse> getActiveMedicines();
+    
     MedicineResponse updateMedicine(
             Long id,
             MedicineUpdateRequest request

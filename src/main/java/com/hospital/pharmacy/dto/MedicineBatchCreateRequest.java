@@ -21,18 +21,29 @@ public class MedicineBatchCreateRequest {
     private String batchNumber;
 
     @NotNull(message = "Purchase price is required")
-    @DecimalMin("0.00")
+    @DecimalMin(
+            value = "0.00",
+            message = "Purchase price cannot be negative"
+    )
     private BigDecimal purchasePrice;
 
     @NotNull(message = "Selling price is required")
-    @DecimalMin("0.00")
+    @DecimalMin(
+            value = "0.00",
+            message = "Selling price cannot be negative"
+    )
     private BigDecimal sellingPrice;
 
     @NotNull(message = "Quantity is required")
-    @Min(1)
+    @Min(
+            value = 1,
+            message = "Quantity must be at least 1"
+    )
     private Integer quantity;
 
     @NotNull(message = "Expiry date is required")
-    @Future(message = "Expiry date must be in the future")
+    @Future(
+            message = "Expiry date must be in the future"
+    )
     private LocalDate expiryDate;
 }

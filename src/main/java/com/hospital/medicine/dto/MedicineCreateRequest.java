@@ -25,3 +25,4 @@ public class MedicineCreateRequest {
 
     private MedicineStatus status;
 }
+

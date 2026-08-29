@@ -1,5 +1,6 @@
 package com.hospital.medicine.dto;
 
+
 import com.hospital.medicine.entity.MedicineStatus;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -23,3 +24,4 @@ public class MedicineUpdateRequest {
 
     private MedicineStatus status;
 }
+
