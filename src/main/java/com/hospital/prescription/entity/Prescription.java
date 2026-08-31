@@ -116,6 +116,23 @@ public class Prescription extends BaseEntity {
 
         item.setPrescription(null);
     }
+
+
+//    Entry level:
+//    @Enumerated(EnumType.STRING)
+//    @Column(
+//            name = "status",
+//            nullable = false,
+//            length = 20
+//    )
+//    private PrescriptionStatus status =
+//            PrescriptionStatus.ACTIVE;
+
+
+//    Senior level:
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private PrescriptionStatus status;
 }
 
 

@@ -16,6 +16,7 @@ import com.hospital.prescription.dto.PrescriptionItemResponse;
 import com.hospital.prescription.dto.PrescriptionResponse;
 import com.hospital.prescription.entity.Prescription;
 import com.hospital.prescription.entity.PrescriptionItem;
+import com.hospital.prescription.entity.PrescriptionStatus;
 import com.hospital.prescription.repository.PrescriptionRepository;
 import com.hospital.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -212,6 +213,10 @@ public class PrescriptionServiceImpl
          * 6. Save
          * =====================================
          */
+
+        prescription.setStatus(
+                PrescriptionStatus.ACTIVE
+        );
 
         Prescription saved =
                 prescriptionRepository.save(

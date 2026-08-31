@@ -93,6 +93,9 @@ public class PrescriptionItem extends BaseEntity {
             length = 300
     )
     private String instructions;
+
+    @Column(nullable = false)
+    private Integer quantity;
 }
 
 
